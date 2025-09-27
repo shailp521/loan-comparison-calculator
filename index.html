@@ -3,27 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loan Calculator</title>
+    <title>Flexible Loan Strategy Comparison Calculator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Loan Calculator</h1>
-    <form id="loan-form">
-        <div>
-            <label for="amount">Loan Amount:</label>
-            <input type="number" id="amount" required>
+    <div class="container">
+        <div class="header">
+            <h1>Loan Strategy Comparison Calculator</h1>
+            <p>Compare multiple loan strategies side by side</p>
         </div>
-        <div>
-            <label for="interest">Interest Rate:</label>
-            <input type="number" id="interest" required>
+
+        <div class="main-content">
+            <div class="strategy-builder">
+                <h3>Add Loan Strategy</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="strategyType">Strategy Type</label>
+                        <select id="strategyType" onchange="updateStrategyForm()">
+                            <option value="current">Current Loan</option>
+                            <option value="fixed">Fixed Term</option>
+                            <option value="buydown-1-0">1-0 Buydown</option>
+                            <option value="buydown-2-1">2-1 Buydown</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loanAmount">Loan Amount ($)</label>
+                        <input type="number" id="loanAmount" step="0.01" placeholder="e.g., 400000">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="interestRate">Interest Rate (%)</label>
+                        <input type="number" id="interestRate" step="0.01" placeholder="e.g., 7.25">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loanTerm">Loan Term (years)</label>
+                        <select id="loanTerm">
+                            <option value="10">10 years</option>
+                            <option value="15">15 years</option>
+                            <option value="20">20 years</option>
+                            <option value="25">25 years</option>
+                            <option value="30" selected>30 years</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pmiAmount">PMI ($/month)</label>
+                        <input type="number" id="pmiAmount" step="0.01" value="0" placeholder="Enter PMI">
+                    </div>
+                </div>
+
+                <div class="form-row" id="additionalFields">
+                    <!-- Dynamic fields based on strategy type -->
+                </div>
+
+                <div style="margin-top: 25px;">
+                    <button class="btn" onclick="addStrategy()">Add Strategy</button>
+                    <button class="btn btn-danger" onclick="clearAllStrategies()" style="margin-left: 10px;">Clear All</button>
+                    <button class="btn btn-success" id="showComparisonBtn" onclick="showComparison()" style="margin-left: 10px; display: none;">Show Comparison</button>
+                </div>
+            </div>
+
+            <div class="strategies-list">
+                <h3>Added Strategies</h3>
+                <div id="strategiesContainer">
+                    <div class="empty-state">
+                        <h3>No strategies added yet</h3>
+                        <p>Add your first loan strategy above to begin comparison</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-section" id="comparisonSection" style="display: none;">
+                <div class="comparison-controls">
+                    <h3 style="margin: 0;">Strategy Comparison</h3>
+                </div>
+
+                <div id="overviewComparison"></div>
+
+                <div class="comparison-controls">
+                    <h3 style="margin: 0;">Payment Schedule</h3>
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <label for="scheduleMonths">Period:</label>
+                        <select id="scheduleMonths" onchange="updateComparison()">
+                            <option value="12" selected>12 months</option>
+                            <option value="36">3 years</option>
+                            <option value="60">5 years</option>
+                            <option value="120">10 years</option>
+                            <option value="full">Entire duration</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="scheduleComparison"></div>
+            </div>
         </div>
-        <div>
-            <label for="years">Years to Repay:</label>
-            <input type="number" id="years" required>
-        </div>
-        <button type="submit">Calculate</button>
-    </form>
-    <div id="result"></div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
